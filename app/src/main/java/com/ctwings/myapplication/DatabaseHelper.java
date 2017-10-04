@@ -330,7 +330,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     e.printStackTrace();
                 } finally {
                     records.add(record);
-                    record = null;
                 }
                 cursor.moveToNext();
             }
