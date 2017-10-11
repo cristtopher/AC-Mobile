@@ -176,7 +176,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                             iHelp.bind(iHelp.getColumnIndex(PERSON_NAME), json_db_array.getJSONObject(i).getString("name"));
                             try{
                                 iHelp.bind(iHelp.getColumnIndex(PERSON_CARD), json_db_array.getJSONObject(i).getString("card"));
-                            }catch (JSONException e){
+                            } catch (JSONException e){
                                 Log.d("No value for card", e.getMessage());
                             }
                             break;
@@ -187,16 +187,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                             } catch (JSONException e){
                                 Log.d("No value for compInfo", e.getMessage());
                             }
-                            if (json_db_array.getJSONObject(i).getString("card") != null)
+                            try {
                                 iHelp.bind(iHelp.getColumnIndex(PERSON_CARD), json_db_array.getJSONObject(i).getString("card"));
+                            } catch (JSONException e) {
+                                Log.d("No value for card", e.getMessage());
+                            }
                             break;
                         case "visitor": // Visit
-                            if (!json_db_array.getJSONObject(i).getString("name").isEmpty())
+                            try {
                                 iHelp.bind(iHelp.getColumnIndex(PERSON_NAME), json_db_array.getJSONObject(i).getString("name"));
+                            } catch (JSONException e) {
+                                Log.d("No value for name", e.getMessage());
+                            }
                             try {
                                 iHelp.bind(iHelp.getColumnIndex(PERSON_COMPANY), json_db_array.getJSONObject(i).getString("companyInfo"));
                             } catch (JSONException e){
-                                //Do nothing.
+                                Log.d("No value companyInfo", e.getMessage());
                             }
                             break;
                         default:
