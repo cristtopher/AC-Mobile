@@ -170,39 +170,38 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     sMongoPersonId = json_db_array.getJSONObject(i).getString("_id");
                     iHelp.bind(iHelp.getColumnIndex(PERSON_MONGO_ID), sMongoPersonId);
                     iHelp.bind(iHelp.getColumnIndex(PERSON_ACTIVE), json_db_array.getJSONObject(i).getString("active"));
+                    try {
+                        iHelp.bind(iHelp.getColumnIndex(PERSON_NAME), json_db_array.getJSONObject(i).getString("name"));
+                    } catch (JSONException e) {
+                        Log.d("Person without name", e.getMessage());
+                    }
 
                     switch (json_db_array.getJSONObject(i).getString("type")) {
                         case "staff": // Employee
-                            iHelp.bind(iHelp.getColumnIndex(PERSON_NAME), json_db_array.getJSONObject(i).getString("name"));
                             try{
                                 iHelp.bind(iHelp.getColumnIndex(PERSON_CARD), json_db_array.getJSONObject(i).getString("card"));
                             } catch (JSONException e){
-                                Log.d("No value for card", e.getMessage());
+                                Log.d("Person without card", e.getMessage());
                             }
                             break;
                         case "contractor": // Contactor
-                            iHelp.bind(iHelp.getColumnIndex(PERSON_NAME), json_db_array.getJSONObject(i).getString("name"));
                             try {
                                 iHelp.bind(iHelp.getColumnIndex(PERSON_COMPANY), json_db_array.getJSONObject(i).getString("companyInfo"));
                             } catch (JSONException e){
-                                Log.d("No value for compInfo", e.getMessage());
+                                Log.d("Person without compInfo", e.getMessage());
                             }
                             try {
                                 iHelp.bind(iHelp.getColumnIndex(PERSON_CARD), json_db_array.getJSONObject(i).getString("card"));
                             } catch (JSONException e) {
-                                Log.d("No value for card", e.getMessage());
+                                Log.d("Person without card", e.getMessage());
                             }
                             break;
                         case "visitor": // Visit
-                            try {
-                                iHelp.bind(iHelp.getColumnIndex(PERSON_NAME), json_db_array.getJSONObject(i).getString("name"));
-                            } catch (JSONException e) {
-                                Log.d("No value for name", e.getMessage());
-                            }
+
                             try {
                                 iHelp.bind(iHelp.getColumnIndex(PERSON_COMPANY), json_db_array.getJSONObject(i).getString("companyInfo"));
                             } catch (JSONException e){
-                                Log.d("No value companyInfo", e.getMessage());
+                                Log.d("Person without compInfo", e.getMessage());
                             }
                             break;
                         default:
