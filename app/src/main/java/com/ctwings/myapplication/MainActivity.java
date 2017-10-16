@@ -77,9 +77,7 @@ public class MainActivity extends AppCompatActivity {
     
     private final int delayPeople = 60000; // 1 Min.
     private final int delayRecords = 5000; // 5 Seg
-    //private static String server = "http://13.93.166.140:5001"; // Integration server
-    //private static String server = "http://192.168.1.102:9000"; // Integration server
-    private static String server = "http://axxezocloud.brazilsouth.cloudapp.azure.com:5001"; // Test server
+    private static String server = "http://production-axxezo.brazilsouth.cloudapp.azure.com:5001"; // Test server
     private String idCompany = "";
     private String companyName = "";
     private String idSector = "";
@@ -567,6 +565,17 @@ public class MainActivity extends AppCompatActivity {
                         } catch (NullPointerException npe) {
                             textViewName.setText("");
                             log.writeLog(getApplicationContext(), "Main:line 504", "ERROR", npe.getMessage());
+                        }
+                        break;
+                    case "supplier":
+                        textViewName.setText(person.getString(person.getColumnIndex("person_name")));
+                        textViewProfile.setText("Proveedor");
+                        // If have company show it.
+                        if (!person.getString(person.getColumnIndex("person_company")).isEmpty()) {
+                            textViewCompany.setText(person.getString(person.getColumnIndex("person_company")));
+                            textViewCompany.setVisibility(View.VISIBLE);
+                        } else {
+                            textViewCompany.setVisibility(View.GONE);
                         }
                         break;
                 }

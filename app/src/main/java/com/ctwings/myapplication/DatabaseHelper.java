@@ -184,7 +184,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                                 Log.d("Person without card", e.getMessage());
                             }
                             break;
-                        case "contractor": // Contactor
+                        case "contractor":
                             try {
                                 iHelp.bind(iHelp.getColumnIndex(PERSON_COMPANY), json_db_array.getJSONObject(i).getString("companyInfo"));
                             } catch (JSONException e){
@@ -196,12 +196,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                                 Log.d("Person without card", e.getMessage());
                             }
                             break;
-                        case "visitor": // Visit
+                        case "visitor":
 
                             try {
                                 iHelp.bind(iHelp.getColumnIndex(PERSON_COMPANY), json_db_array.getJSONObject(i).getString("companyInfo"));
                             } catch (JSONException e){
                                 Log.d("Person without compInfo", e.getMessage());
+                            }
+                            break;
+                        case "supplier":
+                            try {
+                                iHelp.bind(iHelp.getColumnIndex(PERSON_COMPANY), json_db_array.getJSONObject(i).getString("companyInfo"));
+                            } catch (JSONException e){
+                                Log.d("Person without compInfo", e.getMessage());
+                            }
+                            try {
+                                iHelp.bind(iHelp.getColumnIndex(PERSON_CARD), json_db_array.getJSONObject(i).getString("card"));
+                            } catch (JSONException e) {
+                                Log.d("Person without card", e.getMessage());
                             }
                             break;
                         default:
