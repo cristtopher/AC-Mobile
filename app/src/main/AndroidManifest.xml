@@ -39,14 +39,13 @@
             android:value="@integer/google_play_services_version" />
 
         <activity
-            android:name=".Setting"
-            android:label="@string/title_activity_setting"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".log_show"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".aboutUS" />
-        <activity android:name=".email_fill"></activity>
+        <activity android:name=".email_fill" />
+        <activity
+            android:name=".Settings"
+            android:label="@string/title_activity_settings"></activity>
     </application>
 
 </manifest>

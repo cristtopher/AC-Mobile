@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -70,14 +71,16 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+import android.preference.PreferenceManager;
+
 /**
  * Handle register and people. Have the main business logic.
  */
 public class MainActivity extends AppCompatActivity {
-    
-    private final int delayPeople = 60000; // 1 Min.
-    private final int delayRecords = 5000; // 5 Seg
-    private static String server = "http://production-axxezo.brazilsouth.cloudapp.azure.com:5001"; // Test server
+
+    private  int delayPeople =0;
+    private  int delayRecords =0;
+    private String server = ""; // Test server
     private String idCompany = "";
     private String companyName = "";
     private String idSector = "";
@@ -122,6 +125,34 @@ public class MainActivity extends AppCompatActivity {
         //remove it
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 
+
+        //obtain shared preferences for the user, then ask if the value is null, if is null, put  a default value
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = preferences.edit();
+        if (preferences.getString("server_text", "").isEmpty()) {
+            editor.putString("server_text", "http://production-axxezo.brazilsouth.cloudapp.azure.com"); // value to store
+            editor.apply();
+        }
+        if (preferences.getString("port_text", "").isEmpty()) {
+            editor.putString("port_text", "5001"); // value to store
+            editor.apply();
+        }
+        if (preferences.getString("timer_people_delay", "").isEmpty()) {
+            editor.putString("timer_people_delay", "1"); // value to store
+            editor.apply();
+        }
+        if (preferences.getString("timer_registers_delay", "").isEmpty()) {
+            editor.putString("timer_registers_delay", "0.09"); // value to store
+            editor.apply();
+        }
+        //finally setup timers and server URL
+        server = preferences.getString("server_text", "") + ":" + preferences.getString("port_text", "");
+        delayPeople=(int)(Double.parseDouble(preferences.getString("timer_people_delay", ""))*60000);
+        delayRecords=(int)(Double.parseDouble(preferences.getString("timer_registers_delay", ""))*60000);
+
+        Log.d("server",server);
+        Log.d("delay people",delayPeople+"");
+        Log.d("delay records",delayRecords+"");
         // Get initial setup
         new getSetupTask().execute();
 
@@ -209,9 +240,6 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_refresh) {
             reset();
             return true;
-        } else if (id == R.id.action_setting) {
-            Intent i = new Intent(this, Setting.class);
-            startActivity(i);
         } else if (id == R.id.action_aboutUs) {
             Intent i = new Intent(this, aboutUS.class);
             startActivity(i);
@@ -353,6 +381,9 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(this, log_show.class);
                 startActivity(intent);
                 break;
+            case "CONFIG-AXX-CCD1066343C95877B75B79D47C36BEBE":
+                Intent i = new Intent(this, Settings.class);
+                startActivity(i);
             default:
                 makeToast("Código de configuración incorrecto!");
                 break;
