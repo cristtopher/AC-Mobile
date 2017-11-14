@@ -19,8 +19,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -28,35 +28,26 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.pnikosis.materialishprogress.ProgressWheel;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
 import org.apache.http.conn.HttpHostConnectException;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Date;
 import java.util.List;
@@ -70,8 +61,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-
-import android.preference.PreferenceManager;
 
 /**
  * Handle register and people. Have the main business logic.
@@ -150,9 +139,6 @@ public class MainActivity extends AppCompatActivity {
         delayPeople=(int)(Double.parseDouble(preferences.getString("timer_people_delay", ""))*60000);
         delayRecords=(int)(Double.parseDouble(preferences.getString("timer_registers_delay", ""))*60000);
 
-        Log.d("server",server);
-        Log.d("delay people",delayPeople+"");
-        Log.d("delay records",delayRecords+"");
         // Get initial setup
         new getSetupTask().execute();
 
@@ -371,6 +357,7 @@ public class MainActivity extends AppCompatActivity {
                 // Drop people table
                 db.clean_people();
                 makeToast("Tabla personas vaciada.");
+                break;
             case "CONFIG-AXX-A11C9984001C27A12CC09A3C53B39ADF":
                 // Drop record table
                 db.clean_records();
@@ -384,6 +371,7 @@ public class MainActivity extends AppCompatActivity {
             case "CONFIG-AXX-CCD1066343C95877B75B79D47C36BEBE":
                 Intent i = new Intent(this, Settings.class);
                 startActivity(i);
+                break;
             default:
                 makeToast("Código de configuración incorrecto!");
                 break;
